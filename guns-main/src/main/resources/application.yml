@@ -27,3 +27,10 @@ mybatis-plus:
 
 log:
   path: _app_logs
+
+logging:
+  level:
+    root: info
+    org.mybatis: debug
+    java.sql: debug
+    org.springframework.web: trace

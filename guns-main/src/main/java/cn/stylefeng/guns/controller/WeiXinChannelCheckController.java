@@ -16,7 +16,7 @@ public class WeiXinChannelCheckController extends BaseController {
      * 手工操作对账 获取对账结果
      * @return
      */
-    @GetMapping("manual/check")
+    @GetMapping("/manual/check")
     public String manualCheck(){
         return "success";
     }
