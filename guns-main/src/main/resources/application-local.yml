@@ -25,7 +25,7 @@
 #    password: root
 #    filters: wall,mergeStat
 
-# Mysql数据库
+# Mysql数据库 Driver由"com.mysql.jdbc.Driver"修改至"com.mysql.cj.jdbc.Driver"
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
