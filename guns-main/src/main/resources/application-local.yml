@@ -7,24 +7,6 @@
 #    password: GUNS
 #    filters: wall,mergeStat
 
-#SQLServer配置
-#spring:
-#  datasource:
-#    driverClassName: net.sourceforge.jtds.jdbc.Driver
-#    url: jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=guns
-#    username: root
-#    password: root
-#    filters: wall,mergeStat
-
-#PostgreSQL配置
-#spring:
-#  datasource:
-#    driverClassName: org.postgresql.Driver
-#    url: jdbc:postgresql://127.0.0.1:5432/guns
-#    username: root
-#    password: root
-#    filters: wall,mergeStat
-
 # Mysql数据库 Driver由"com.mysql.jdbc.Driver"修改至"com.mysql.cj.jdbc.Driver"
 spring:
   datasource:
