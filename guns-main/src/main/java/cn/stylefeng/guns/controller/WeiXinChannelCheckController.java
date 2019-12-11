@@ -19,11 +19,9 @@ public class WeiXinChannelCheckController extends BaseController {
      * @return
      */
     @RequestMapping("")
-    public String weixinCheckPage(){
+    public String weiXinCheckPage(){
         return PREFIX + "user.html";
     }
-
-
 
 
     /**
