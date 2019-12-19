@@ -31,7 +31,7 @@ public class MerchantController extends BaseController {
     public LayuiPageInfo queryList(@RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "code", required = false) String code){
 
-            Page<Map<String, Object>> users = merchantService.queryList(name, code);
+            Page<Map<String, Object>> users = merchantService.listMerchants(name, code);
             Page wrapped = new UserWrapper(users).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
     }

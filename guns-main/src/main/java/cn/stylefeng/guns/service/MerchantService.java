@@ -14,8 +14,9 @@ public class MerchantService {
     @Autowired
     private MerchantDao merchantDao;
 
-    public Page<Map<String,Object>> queryList(String name, String code) {
+    public Page<Map<String,Object>> listMerchants(String name, String code) {
         Page page = LayuiPageFactory.defaultPage();
-        return merchantDao.queryList(page, name, code);
+        return merchantDao.listMerchants(page, name, code);
     }
+
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 public interface MerchantDao {
 
 
-    Page<Map<String,Object>> queryList(@Param("page") Page page,
+    Page<Map<String,Object>> listMerchants(@Param("page") Page page,
                                        @Param("name") String name,
                                        @Param("code") String code);
 }
