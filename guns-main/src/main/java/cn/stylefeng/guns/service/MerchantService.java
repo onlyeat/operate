@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service("merchantService")
+@Service
 public class MerchantService {
 
     @Autowired

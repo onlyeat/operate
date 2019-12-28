@@ -21,7 +21,7 @@ spring:
         max-actives: -1
 
 mybatis-plus:
-  typeAliasesPackage: cn.stylefeng.guns.modular.system.model
+  typeAliasesPackage: cn.stylefeng.guns.modular.system.model,cn.stylefeng.guns.modular.entity
   mapper-locations:
     - classpath*:cn/stylefeng/guns/**/mapping/*.xml
 

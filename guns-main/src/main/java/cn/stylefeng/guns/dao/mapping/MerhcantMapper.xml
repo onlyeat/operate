@@ -29,7 +29,7 @@
             and name like CONCAT('%',#{name},'%'))
         </if>
         <if test="code != null and code != ''">
-            and code =#{name}
+            and code =#{code}
         </if>
     </select>
 </mapper>
