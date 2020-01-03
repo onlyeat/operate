@@ -19,7 +19,6 @@
         id, name, code, status, create_by, update_by, create_time, update_time
     </sql>
 
-
     <select id="listMerchants" resultType="map">
         select
         <include refid="Base_Column_List"/>
