@@ -24,10 +24,10 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     merchant.initColumn = function () {
         return [[
             {type: 'checkbox'},
-            {field: 'roleId', hide: true, sort: true, title: '角色id'},
-            {field: 'name', align: "center", sort: true, title: '名称'},
-            {field: 'pName', align: "center", sort: true, title: '上级角色'},
-            {field: 'description', align: "center", sort: true, title: '别名'},
+            {field: 'id', hide: true, sort: true, title: 'id'},
+            {field: 'name', align: "center", sort: true, title: '商户名称'},
+            {field: 'code', align: "center", sort: true, title: '商户编码'},
+            {field: 'createBy', align: "center", sort: true, title: '创建者'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
         ]];
     };
@@ -38,6 +38,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     merchant.search = function () {
         var queryData = {};
         queryData['name'] = $("#name").val();
+        queryData['code'] = $("#code").val();
         table.reload(merchant.tableId, {
             where: queryData, page: {curr: 1}
         });
@@ -122,7 +123,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + merchant.tableId,
-        url: Feng.ctxPath + '/merchant/list',
+        url: Feng.ctxPath + '/merchant/queryList',
         page: true,
         height: "full-98",
         cellMinWidth: 100,
