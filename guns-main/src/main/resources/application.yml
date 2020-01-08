@@ -34,3 +34,15 @@ logging:
     org.mybatis: debug
     java.sql: debug
     org.springframework.web: trace
+
+    1. 先添加pom文件
+    使用gradle :
+    compile group: 'commons-net', name: 'commons-net', version: "3.6"
+
+    2. 在application.yml中配置参数：
+    ftp.host: localhost
+    ftp.port: 210
+    ftp.username: ftp01
+    ftp.password: abc
+    ftp.filepath: /
+
