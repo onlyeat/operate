@@ -35,14 +35,31 @@ logging:
     java.sql: debug
     org.springframework.web: trace
 
-    1. 先添加pom文件
-    使用gradle :
-    compile group: 'commons-net', name: 'commons-net', version: "3.6"
+#支付宝 银商ftp
+ftp.zfb.hostname=192.168.1.30
+ftp.zfb.port=21
+ftp.zfb.username=koolpos
+ftp.zfb.password=koolpos401ftp
+ftp.zfb.path=/ftp/images/old
 
-    2. 在application.yml中配置参数：
-    ftp.host: localhost
-    ftp.port: 210
-    ftp.username: ftp01
-    ftp.password: abc
-    ftp.filepath: /
+#微信 中百ftp
+ftp.wx.hostname=192.168.1.30
+ftp.wx.port=21
+ftp.wx.username=koolpos
+ftp.wx.password=koolpos401ftp
+ftp.wx.path=/ftp/images/old
+
+#云闪付 银联ftp
+ftp.ysf.hostname=192.168.1.30
+ftp.ysf.port=21
+ftp.ysf.username=koolpos
+ftp.ysf.password=koolpos401ftp
+ftp.ysf.path=/ftp/images/old
+
+#中百富基 ftp
+ftp.erp.hostname=192.168.1.30
+ftp.erp.port=21
+ftp.erp.username=koolpos
+ftp.erp.password=koolpos401ftp
+ftp.erp.path=/ftp/images/old
 
