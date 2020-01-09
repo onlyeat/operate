@@ -80,19 +80,19 @@ public class FtpOperation {
             }
             // 输出操作结果信息
             if (returnValue) {
-                log.info("uploadToFtp INFO: upload file  to ftp : succeed!");
+                LOGGER.info("uploadToFtp INFO: upload file  to ftp : succeed!");
             } else {
-                log.info("uploadToFtp INFO: upload file  to ftp : failed!");
+                LOGGER.info("uploadToFtp INFO: upload file  to ftp : failed!");
             }
             buffIn.close();
             // 关闭连接
             closeConnect();
         } catch (FTPConnectionClosedException e) {
-            log.error("ftp连接被关闭！", e);
+            LOGGER.error("ftp连接被关闭！", e);
             throw e;
         } catch (Exception e) {
             returnValue = false;
-            log.error("ERR : upload file  to ftp : failed! ", e);
+            LOGGER.error("ERR : upload file  to ftp : failed! ", e);
             throw e;
         } finally {
             try {
@@ -100,7 +100,7 @@ public class FtpOperation {
                     buffIn.close();
                 }
             } catch (Exception e) {
-                log.error("ftp关闭输入流时失败！", e);
+                LOGGER.error("ftp关闭输入流时失败！", e);
             }
             if (ftpClient.isConnected()) {
                 closeConnect();
@@ -132,16 +132,16 @@ public class FtpOperation {
                 ftpClient.disconnect();
                 throw new IOException("failed to connect to the FTP Server:" + ip);
             }
-            ftpClient.changeWorkingDirectory(CURRENT_DIR);
+            ftpClient.changeWorkingDirectory(currentDir);
 
             // ftp文件获取文件
             in = ftpClient.retrieveFileStream(filename);
 
         } catch (FTPConnectionClosedException e) {
-            log.error("ftp连接被关闭！", e);
+            LOGGER.error("ftp连接被关闭！", e);
             throw e;
         } catch (Exception e) {
-            log.error("ERR : upload file " + filename + " from ftp : failed!", e);
+            LOGGER.error("ERR : upload file " + filename + " from ftp : failed!", e);
         }
         return in;
     }
@@ -172,7 +172,7 @@ public class FtpOperation {
         try {
             ftpClient.setFileType(fileType);
         } catch (Exception e) {
-            log.error("ftp设置传输文件的类型时失败！", e);
+            LOGGER.error("ftp设置传输文件的类型时失败！", e);
         }
     }
 
@@ -186,7 +186,7 @@ public class FtpOperation {
                 ftpClient.disconnect();
             }
         } catch (Exception e) {
-            log.error("ftp连接关闭失败！", e);
+            LOGGER.error("ftp连接关闭失败！", e);
         }
     }
 
@@ -204,14 +204,14 @@ public class FtpOperation {
 
                 if (!FTPReply.isPositiveCompletion(reply)) {
                     ftpClient.disconnect();
-                    log.info("connectToServer FTP server refused connection.");
+                    LOGGER.info("connectToServer FTP server refused connection.");
                 }
 
             } catch (FTPConnectionClosedException ex) {
-                log.error("服务器:IP：" + ip + "没有连接数！there are too many connected users,please try later", ex);
+                LOGGER.error("服务器:IP：" + ip + "没有连接数！there are too many connected users,please try later", ex);
                 throw ex;
             } catch (Exception e) {
-                log.error("登录ftp服务器【" + ip + "】失败", e);
+                LOGGER.error("登录ftp服务器【" + ip + "】失败", e);
                 throw e;
             }
         }
