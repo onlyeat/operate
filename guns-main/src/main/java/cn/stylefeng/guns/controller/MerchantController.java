@@ -3,7 +3,6 @@ package cn.stylefeng.guns.controller;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
 import cn.stylefeng.guns.service.MerchantService;
-import cn.stylefeng.guns.sys.modular.system.warpper.UserWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -37,9 +37,15 @@ public class MerchantController extends BaseController {
                                    @RequestParam(value = "code", required = false) String code) {
 
         Page<Map<String, Object>> merchants = merchantService.listMerchants(name, code);
-        Page wrapped = new UserWrapper(merchants).wrap();
+      //  Page wrapped = new UserWrapper(merchants).wrap();
 //        Page = merchantService.fillObject(merchants);
-//        logger.info("LayuiPageFactory.createPageInfo(merchants):{}", LayuiPageFactory.createPageInfo(merchants));
-        return LayuiPageFactory.createPageInfo(wrapped);
+        return LayuiPageFactory.createPageInfo(merchants);
     }
+
+    @RequestMapping("/addView")
+    public ModelAndView addView(ModelAndView mv){
+        mv.setViewName(PREFIX + "merchant_add.html");
+        return mv;
+    }
+
 }
