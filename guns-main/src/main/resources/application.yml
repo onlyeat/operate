@@ -45,11 +45,11 @@ ftp.zfb:
 
 #微信 中百ftp
 ftp.wx:
-    hostname: 192.168.1.30
+    hostname: 214.72.20.106
     port: 21
-    username: koolpos
-    password: koolpos401ftp
-    path: /ftp/images/old
+    username: zbwallet
+    password: ZB.wallet
+    path: /
 
 #云闪付 银联ftp
 ftp.ysf:
@@ -61,9 +61,9 @@ ftp.ysf:
 
 #中百富基 ftp
 ftp.erp:
-    hostname: 192.168.1.30
+    hostname: 214.72.20.106
     port: 21
-    username: koolpos
-    password: koolpos401ftp
-    path: /ftp/images/old
+    username: zbwallet
+    password: ZB.wallet
+    path: /
 
