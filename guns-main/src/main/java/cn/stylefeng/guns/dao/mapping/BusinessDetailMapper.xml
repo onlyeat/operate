@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.dao.BusinessDetailDao">
+
+    <resultMap id="businessDetailMap" type="cn.stylefeng.guns.modular.entity.BusinessDetail">
+        <result property="id" column="id"/>
+        <result property="merchantNo" column="merchant_no"/>
+        <result property="terminal" column="terminal"/>
+        <result property="clearDate" column="clear_date"/>
+        <result property="tradeDate" column="trade_date"/>
+        <result property="tradeCardNo" column="trade_card_no"/>
+        <result property="indexNo" column="index_no"/>
+        <result property="tradeChannel" column="trade_channel"/>
+        <result property="tradeAmount" column="trade_amount"/>
+        <result property="discountAmount" column="discount_amount"/>
+        <result property="realAmount" column="real_amount"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="productInfo" column="product_info"/>
+        <result property="bak1" column="bak1"/>
+        <result property="bak2" column="bak2"/>
+        <result property="bak3" column="bak3"/>
+        <result property="bak4" column="bak4"/>
+        <result property="bak5" column="bak5"/>
+        <result property="bak6" column="bak6"/>
+        <result property="bak7" column="bak7"/>
+        <result property="bak8" column="bak8"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+        id ,merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,trade_channel ,trade_amount ,discount_amount ,real_amount ,trade_type ,product_info ,bak1 ,bak2 ,bak3 ,bak4 ,bak5 ,bak6 ,bak7 ,bak8 
+	    ]]>
+	</sql>
+	
+    <insert id="insert" parameterType="businessDetail">
+    	<selectKey resultType="long" keyProperty="id" >
+            select last_insert_id()
+        </selectKey>
+        INSERT INTO business_detail (
+        	merchant_no,
+        	terminal,
+        	clear_date,
+        	trade_date,
+        	trade_card_no,
+        	index_no,
+        	trade_channel,
+        	trade_amount,
+        	discount_amount,
+        	real_amount,
+        	trade_type,
+        	product_info,
+        	bak1,
+        	bak2,
+        	bak3,
+        	bak4,
+        	bak5,
+        	bak6,
+        	bak7,
+        	bak8
+        ) VALUES (
+        	#{merchantNo},
+        	#{terminal},
+        	#{clearDate},
+        	#{tradeDate},
+        	#{tradeCardNo},
+        	#{indexNo},
+        	#{tradeChannel},
+        	#{tradeAmount},
+        	#{discountAmount},
+        	#{realAmount},
+        	#{tradeType},
+        	#{productInfo},
+        	#{bak1},
+        	#{bak2},
+        	#{bak3},
+        	#{bak4},
+        	#{bak5},
+        	#{bak6},
+        	#{bak7},
+        	#{bak8}
+        )
+        
+    </insert>
+
+    <update id="update"  parameterType="businessDetail">
+        UPDATE business_detail <trim prefix="SET" suffixOverrides=",">  
+	        <if test="merchantNo != null "> merchant_no = #{merchantNo} ,</if>
+	        <if test="terminal != null "> terminal = #{terminal} ,</if>
+	        <if test="clearDate != null "> clear_date = #{clearDate} ,</if>
+	        <if test="tradeDate != null "> trade_date = #{tradeDate} ,</if>
+	        <if test="tradeCardNo != null "> trade_card_no = #{tradeCardNo} ,</if>
+	        <if test="indexNo != null "> index_no = #{indexNo} ,</if>
+	        <if test="tradeChannel != null "> trade_channel = #{tradeChannel} ,</if>
+	        <if test="tradeAmount != null "> trade_amount = #{tradeAmount} ,</if>
+	        <if test="discountAmount != null "> discount_amount = #{discountAmount} ,</if>
+	        <if test="realAmount != null "> real_amount = #{realAmount} ,</if>
+	        <if test="tradeType != null "> trade_type = #{tradeType} ,</if>
+	        <if test="productInfo != null "> product_info = #{productInfo} ,</if>
+	        <if test="bak1 != null "> bak1 = #{bak1} ,</if>
+	        <if test="bak2 != null "> bak2 = #{bak2} ,</if>
+	        <if test="bak3 != null "> bak3 = #{bak3} ,</if>
+	        <if test="bak4 != null "> bak4 = #{bak4} ,</if>
+	        <if test="bak5 != null "> bak5 = #{bak5} ,</if>
+	        <if test="bak6 != null "> bak6 = #{bak6} ,</if>
+	        <if test="bak7 != null "> bak7 = #{bak7} ,</if>
+	        <if test="bak8 != null "> bak8 = #{bak8} </if>
+	        </trim>
+        WHERE 
+	        id = #{id} 
+    </update>
+
+    <delete id="delete">
+        DELETE FROM business_detail WHERE
+        id = #{id} 
+    </delete>
+    
+    <select id="getById" parameterType="long" resultMap="businessDetailMap">
+	    SELECT <include refid="columns"/> FROM business_detail  WHERE 
+        id = #{id} 
+    </select>
+    
+    <select id="query" resultMap="businessDetailMap">
+	    SELECT <include refid="columns"/> FROM business_detail 
+	    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	        <if test="vo.id != null ">AND id = #{vo.id} </if>
+	        <if test="vo.merchantNo != null and vo.merchantNo != '' ">AND merchant_no = #{vo.merchantNo} </if>
+	        <if test="vo.terminal != null and vo.terminal != '' ">AND terminal = #{vo.terminal} </if>
+	        <if test="vo.clearDate != null and vo.clearDate != '' ">AND clear_date = #{vo.clearDate} </if>
+	        <if test="vo.tradeDate != null and vo.tradeDate != '' ">AND trade_date = #{vo.tradeDate} </if>
+	        <if test="vo.tradeCardNo != null and vo.tradeCardNo != '' ">AND trade_card_no = #{vo.tradeCardNo} </if>
+	        <if test="vo.indexNo != null and vo.indexNo != '' ">AND index_no = #{vo.indexNo} </if>
+	        <if test="vo.tradeChannel != null and vo.tradeChannel != '' ">AND trade_channel = #{vo.tradeChannel} </if>
+	        <if test="vo.tradeAmount != null ">AND trade_amount = #{vo.tradeAmount} </if>
+	        <if test="vo.discountAmount != null ">AND discount_amount = #{vo.discountAmount} </if>
+	        <if test="vo.realAmount != null ">AND real_amount = #{vo.realAmount} </if>
+	        <if test="vo.tradeType != null and vo.tradeType != '' ">AND trade_type = #{vo.tradeType} </if>
+	        <if test="vo.productInfo != null and vo.productInfo != '' ">AND product_info = #{vo.productInfo} </if>
+	        <if test="vo.bak1 != null and vo.bak1 != '' ">AND bak1 = #{vo.bak1} </if>
+	        <if test="vo.bak2 != null and vo.bak2 != '' ">AND bak2 = #{vo.bak2} </if>
+	        <if test="vo.bak3 != null and vo.bak3 != '' ">AND bak3 = #{vo.bak3} </if>
+	        <if test="vo.bak4 != null and vo.bak4 != '' ">AND bak4 = #{vo.bak4} </if>
+	        <if test="vo.bak5 != null and vo.bak5 != '' ">AND bak5 = #{vo.bak5} </if>
+	        <if test="vo.bak6 != null and vo.bak6 != '' ">AND bak6 = #{vo.bak6} </if>
+	        <if test="vo.bak7 != null and vo.bak7 != '' ">AND bak7 = #{vo.bak7} </if>
+	        <if test="vo.bak8 != null and vo.bak8 != '' ">AND bak8 = #{vo.bak8} </if>
+	     </trim>
+	     <if test="customSort != null and customSort!='' ">ORDER BY ${customSort}</if>
+    </select>
+
+</mapper>
+

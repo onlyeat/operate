@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.dao.FileResultDao">
+
+    <resultMap id="fileResultMap" type="cn.stylefeng.guns.modular.entity.FileResult">
+        <result property="id" column="id"/>
+        <result property="fileDate" column="file_date"/>
+        <result property="channel" column="channel"/>
+        <result property="tradeNumber" column="trade_number"/>
+        <result property="tradeAmount" column="trade_amount"/>
+        <result property="clearAmount" column="clear_amount"/>
+        <result property="diffNumber" column="diff_number"/>
+        <result property="diffAmount" column="diff_amount"/>
+        <result property="diffClearAmount" column="diff_clear_amount"/>
+    </resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+        id ,file_date ,channel ,trade_number ,trade_amount ,clear_amount ,diff_number ,diff_amount ,diff_clear_amount 
+	    ]]>
+	</sql>
+	
+    <insert id="insert" parameterType="fileResult">
+    	<selectKey resultType="long" keyProperty="id" >
+            select last_insert_id()
+        </selectKey>
+        INSERT INTO file_result (
+        	file_date,
+        	channel,
+        	trade_number,
+        	trade_amount,
+        	clear_amount,
+        	diff_number,
+        	diff_amount,
+        	diff_clear_amount
+        ) VALUES (
+        	#{fileDate},
+        	#{channel},
+        	#{tradeNumber},
+        	#{tradeAmount},
+        	#{clearAmount},
+        	#{diffNumber},
+        	#{diffAmount},
+        	#{diffClearAmount}
+        )
+        
+    </insert>
+
+    <update id="update"  parameterType="fileResult">
+        UPDATE file_result <trim prefix="SET" suffixOverrides=",">  
+	        <if test="fileDate != null "> file_date = #{fileDate} ,</if>
+	        <if test="channel != null "> channel = #{channel} ,</if>
+	        <if test="tradeNumber != null "> trade_number = #{tradeNumber} ,</if>
+	        <if test="tradeAmount != null "> trade_amount = #{tradeAmount} ,</if>
+	        <if test="clearAmount != null "> clear_amount = #{clearAmount} ,</if>
+	        <if test="diffNumber != null "> diff_number = #{diffNumber} ,</if>
+	        <if test="diffAmount != null "> diff_amount = #{diffAmount} ,</if>
+	        <if test="diffClearAmount != null "> diff_clear_amount = #{diffClearAmount} </if>
+	        </trim>
+        WHERE 
+	        id = #{id} 
+    </update>
+
+    <delete id="delete">
+        DELETE FROM file_result WHERE
+        id = #{id} 
+    </delete>
+    
+    <select id="getById" parameterType="long" resultMap="fileResultMap">
+	    SELECT <include refid="columns"/> FROM file_result  WHERE 
+        id = #{id} 
+    </select>
+    
+    <select id="query" resultMap="fileResultMap">
+	    SELECT <include refid="columns"/> FROM file_result 
+	    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	        <if test="vo.id != null ">AND id = #{vo.id} </if>
+         	<if test="vo.fileDateBegin != null ">AND file_date >= #{vo.fileDateBegin} </if>
+         	<if test="vo.fileDateEnd != null ">AND file_date &lt;= #{vo.fileDateEnd} </if>
+	        <if test="vo.channel != null and vo.channel != '' ">AND channel = #{vo.channel} </if>
+	        <if test="vo.tradeNumber != null and vo.tradeNumber != '' ">AND trade_number = #{vo.tradeNumber} </if>
+	        <if test="vo.tradeAmount != null ">AND trade_amount = #{vo.tradeAmount} </if>
+	        <if test="vo.clearAmount != null ">AND clear_amount = #{vo.clearAmount} </if>
+	        <if test="vo.diffNumber != null and vo.diffNumber != '' ">AND diff_number = #{vo.diffNumber} </if>
+	        <if test="vo.diffAmount != null ">AND diff_amount = #{vo.diffAmount} </if>
+	        <if test="vo.diffClearAmount != null ">AND diff_clear_amount = #{vo.diffClearAmount} </if>
+	     </trim>
+	     <if test="customSort != null and customSort!='' ">ORDER BY ${customSort}</if>
+    </select>
+
+</mapper>
+
