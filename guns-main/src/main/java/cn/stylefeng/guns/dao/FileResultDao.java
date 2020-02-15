@@ -2,6 +2,7 @@ package cn.stylefeng.guns.dao;
 
 
 import cn.stylefeng.guns.modular.entity.FileResult;
+import org.springframework.stereotype.Repository;
 
 
 /**
@@ -11,6 +12,7 @@ import cn.stylefeng.guns.modular.entity.FileResult;
  * @Date: 2020/02/14/18:14
  * @Description:
  */
+@Repository
 public interface FileResultDao {
 
 	public FileResult getById(Long id);

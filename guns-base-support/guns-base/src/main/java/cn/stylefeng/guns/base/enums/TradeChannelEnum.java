@@ -16,9 +16,9 @@ public enum TradeChannelEnum {
     //    WX微信
     //    ZFB支付宝
     //    YSF云闪付
-    WEI_XIN(1, "微信"),
-    ZHI_FU_BAO(2, "支付宝"),
-    YUN_SHAN_FU(3, "云闪付");
+    WEI_XIN(1, "WX"),
+    ZHI_FU_BAO(2, "ZFB"),
+    YUN_SHAN_FU(3, "YSF");
 
     private Integer code;
 
@@ -26,6 +26,22 @@ public enum TradeChannelEnum {
 
     TradeChannelEnum(Integer code, String desc) {
         this.code = code;
+        this.desc = desc;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
         this.desc = desc;
     }
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,4 +53,13 @@ public class FileResult implements Serializable {
     private java.math.BigDecimal diffClearAmount;
     //columns END
 
+
+    public FileResult() {
+    }
+
+    public FileResult(String tradeNumber, BigDecimal tradeAmount, BigDecimal clearAmount) {
+        this.tradeNumber = tradeNumber;
+        this.tradeAmount = tradeAmount;
+        this.clearAmount = clearAmount;
+    }
 }
