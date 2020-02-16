@@ -26,4 +26,6 @@ public interface BusinessDetailDao {
 	int update(BusinessDetail entity);
 
 	int delete(BusinessDetail entity);
+
+	int insertBatch(List<BusinessDetail> businessDetail);
 }

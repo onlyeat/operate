@@ -1,9 +1,9 @@
 package cn.stylefeng.guns.service;
 
 import cn.stylefeng.guns.base.enums.TradeChannelEnum;
-import cn.stylefeng.guns.dao.BankDetailDao;
+import cn.stylefeng.guns.dao.BusinessDetailDao;
 import cn.stylefeng.guns.dao.FileResultDao;
-import cn.stylefeng.guns.modular.entity.BankDetail;
+import cn.stylefeng.guns.modular.entity.BusinessDetail;
 import cn.stylefeng.guns.modular.entity.FileResult;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +20,21 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class WeiXinFileService {
+public class BusinessDetailService {
 
 	@Autowired
 	private FileResultDao fileResultDao;
 
 	@Autowired
-	private BankDetailDao bankDetailDao;
+	private BusinessDetailDao businessDetailDao;
 
 	/**
-	 * 微信对账文件导入
-	 *
-	 * @param pathName
+	 * 富基业务数据入库
 	 * @param fileName
 	 * @return
 	 */
-	public Boolean importFile(String pathName, String fileName) {
-		File file = new File(String.format("%s%s", pathName, fileName));
+	public Boolean importFile(String fileName) {
+		File file = new File(fileName);
 		BufferedReader bufferedReader = null;
 		try {
 			bufferedReader = new BufferedReader(new FileReader(file));
@@ -45,25 +43,27 @@ public class WeiXinFileService {
 		}
 		int line = 1;
 		String temp = null;
-		List<BankDetail> bankDetailsList = Lists.newArrayList();
+		List<BusinessDetail> businessDetailList = Lists.newArrayList();
 		try {
 			while ((temp = bufferedReader.readLine()) != null) {
 				if (1 == line) {
-					//微信汇总 第一行 36,20100.00,19979.40,0,0.00,0.00
-					String[] firstRow = temp.split(",");
-					FileResult fileResult = new FileResult(firstRow[0], new BigDecimal(firstRow[1]), new BigDecimal(firstRow[2]));
+					//富基汇总 第一行 62|38400
+					String[] firstRow = temp.split("|");
+					FileResult fileResult = new FileResult();
+					fileResult.setTradeNumber(firstRow[0]);
+					fileResult.setTradeAmount(new BigDecimal(firstRow[1]));
 					fileResult.setFileDate(new Timestamp(new Date().getTime()));
 					fileResult.setChannel(TradeChannelEnum.WEI_XIN.getDesc());
 					fileResultDao.insert(fileResult);
 				}
-				//1558678941,,20191105,1105205836,,,,100.00,0.60,99.40,1105205836,,S22,,,4200000424201911054718388463,PURH1911011000000526,0,,,,,,
+				//898420154119049||20191105|1105100940||1911011000000467|ZFB|200|||ZBQB|||||||||
 				String[] detailRow = temp.split(",");
-				BankDetail bankDetail = new BankDetail(detailRow);
-				bankDetailsList.add(bankDetail);
+				BusinessDetail businessDetail = new BusinessDetail(detailRow);
+				businessDetailList.add(businessDetail);
 				line++;
 			}
-			if (CollectionUtils.isEmpty(bankDetailsList)) {
-				bankDetailDao.insertBatch(bankDetailsList);
+			if (CollectionUtils.isEmpty(businessDetailList)) {
+				businessDetailDao.insertBatch(businessDetailList);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,4 +71,5 @@ public class WeiXinFileService {
 		}
 		return true;
 	}
+
 }
