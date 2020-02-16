@@ -2,6 +2,10 @@ package cn.stylefeng.guns.dao;
 
 
 import cn.stylefeng.guns.modular.entity.BankDetail;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,15 +14,18 @@ import cn.stylefeng.guns.modular.entity.BankDetail;
  * @Date: 2020/02/14/18:14
  * @Description:
  */
+@Repository
 public interface BankDetailDao {
 
-	public BankDetail getById(Long id);
+	BankDetail getById(Long id);
 	
-//	public List<BankDetail> query(@Param(value = "vo") BankDetailQuery vo, @Param(value = "customSort") String customSort);
+	List<BankDetail> query(@Param(value = "vo") BankDetail vo, @Param(value = "customSort") String customSort);
 	
-	public int insert(BankDetail entity);
+	int insert(BankDetail entity);
 	
-	public int update(BankDetail entity);
+	int update(BankDetail entity);
 
-	public int delete(BankDetail entity);
+	int delete(BankDetail entity);
+
+	int insertBatch(@Param("list") List<BankDetail> bankDetailsList);
 }

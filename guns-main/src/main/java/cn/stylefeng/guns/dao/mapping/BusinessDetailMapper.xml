@@ -33,7 +33,7 @@
 	    ]]>
 	</sql>
 	
-    <insert id="insert" parameterType="businessDetail">
+    <insert id="insert" parameterType="cn.stylefeng.guns.modular.entity.BusinessDetail">
     	<selectKey resultType="long" keyProperty="id" >
             select last_insert_id()
         </selectKey>
@@ -83,7 +83,7 @@
         
     </insert>
 
-    <update id="update"  parameterType="businessDetail">
+    <update id="update"  parameterType="cn.stylefeng.guns.modular.entity.BusinessDetail">
         UPDATE business_detail <trim prefix="SET" suffixOverrides=",">  
 	        <if test="merchantNo != null "> merchant_no = #{merchantNo} ,</if>
 	        <if test="terminal != null "> terminal = #{terminal} ,</if>

@@ -21,7 +21,7 @@
 	    ]]>
 	</sql>
 	
-    <insert id="insert" parameterType="fileResult">
+    <insert id="insert" parameterType="cn.stylefeng.guns.modular.entity.FileResult">
     	<selectKey resultType="long" keyProperty="id" >
             select last_insert_id()
         </selectKey>
@@ -47,7 +47,7 @@
         
     </insert>
 
-    <update id="update"  parameterType="fileResult">
+    <update id="update"  parameterType="cn.stylefeng.guns.modular.entity.FileResult">
         UPDATE file_result <trim prefix="SET" suffixOverrides=",">  
 	        <if test="fileDate != null "> file_date = #{fileDate} ,</if>
 	        <if test="channel != null "> channel = #{channel} ,</if>

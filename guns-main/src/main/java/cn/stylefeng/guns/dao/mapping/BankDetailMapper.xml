@@ -36,7 +36,7 @@
 	    ]]>
 	</sql>
 	
-    <insert id="insert" parameterType="bankDetail">
+    <insert id="insert" parameterType="cn.stylefeng.guns.modular.entity.BankDetail">
     	<selectKey resultType="long" keyProperty="id" >
             select last_insert_id()
         </selectKey>
@@ -91,8 +91,9 @@
         )
         
     </insert>
+    <insert id="insertBatch"></insert>
 
-    <update id="update"  parameterType="bankDetail">
+    <update id="update"  parameterType="cn.stylefeng.guns.modular.entity.BankDetail">
         UPDATE bank_detail <trim prefix="SET" suffixOverrides=",">  
 	        <if test="merchantNo != null "> merchant_no = #{merchantNo} ,</if>
 	        <if test="terminal != null "> terminal = #{terminal} ,</if>

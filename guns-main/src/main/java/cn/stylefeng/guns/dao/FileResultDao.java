@@ -2,7 +2,10 @@ package cn.stylefeng.guns.dao;
 
 
 import cn.stylefeng.guns.modular.entity.FileResult;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -15,13 +18,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FileResultDao {
 
-	public FileResult getById(Long id);
+	FileResult getById(Long id);
 	
-//	public List<FileResult> query(@Param(value = "vo") FileResultQuery vo, @Param(value = "customSort") String customSort);
-	
-	public int insert(FileResult entity);
-	
-	public int update(FileResult entity);
+	List<FileResult> query(@Param(value = "vo") FileResult vo, @Param(value = "customSort") String customSort);
 
-	public int delete(FileResult entity);
+	int insert(FileResult entity);
+	
+	int update(FileResult entity);
+
+	int delete(FileResult entity);
 }

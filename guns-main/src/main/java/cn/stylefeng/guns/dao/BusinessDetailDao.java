@@ -2,6 +2,10 @@ package cn.stylefeng.guns.dao;
 
 
 import cn.stylefeng.guns.modular.entity.BusinessDetail;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,15 +14,16 @@ import cn.stylefeng.guns.modular.entity.BusinessDetail;
  * @Date: 2020/02/14/18:14
  * @Description:
  */
+@Repository
 public interface BusinessDetailDao {
 
-	public BusinessDetail getById(Long id);
-	
-//	public List<BusinessDetail> query(@Param(value = "vo") BusinessDetailQuery vo, @Param(value = "customSort") String customSort);
-	
-	public int insert(BusinessDetail entity);
-	
-	public int update(BusinessDetail entity);
+	BusinessDetail getById(Long id);
 
-	public int delete(BusinessDetail entity);
+	List<BusinessDetail> query(@Param(value = "vo") BusinessDetail vo, @Param(value = "customSort") String customSort);
+	
+	int insert(BusinessDetail entity);
+	
+	int update(BusinessDetail entity);
+
+	int delete(BusinessDetail entity);
 }
