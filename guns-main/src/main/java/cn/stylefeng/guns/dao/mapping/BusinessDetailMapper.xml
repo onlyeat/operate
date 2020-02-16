@@ -83,7 +83,38 @@
         
     </insert>
 
-    <update id="update"  parameterType="cn.stylefeng.guns.modular.entity.BusinessDetail">
+	<insert id="insertBatch" parameterType="java.util.List">
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into business_detail ()
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			#{item.merchantId,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR},
+			#{item.nickname,jdbcType=VARCHAR},
+			#{item.phone,jdbcType=VARCHAR},
+			#{item.loginName,jdbcType=VARCHAR},
+			#{item.password,jdbcType=VARCHAR},
+			#{item.wechat,jdbcType=VARCHAR},
+			#{item.idCard,jdbcType=VARCHAR},
+			#{item.idCardExpire,jdbcType=TIMESTAMP},
+			#{item.depotCode,jdbcType=VARCHAR},
+			#{item.depotName,jdbcType=VARCHAR},
+			#{item.depotFloor,jdbcType=VARCHAR},
+			#{item.depotDoor,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.accessToken,jdbcType=VARCHAR},
+			#{item.createBy,jdbcType=BIGINT},
+			#{item.updateBy,jdbcType=BIGINT},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.updateTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+	<update id="update"  parameterType="cn.stylefeng.guns.modular.entity.BusinessDetail">
         UPDATE business_detail <trim prefix="SET" suffixOverrides=",">  
 	        <if test="merchantNo != null "> merchant_no = #{merchantNo} ,</if>
 	        <if test="terminal != null "> terminal = #{terminal} ,</if>
