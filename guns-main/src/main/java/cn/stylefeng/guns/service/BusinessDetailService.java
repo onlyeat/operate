@@ -6,11 +6,14 @@ import cn.stylefeng.guns.dao.BusinessDetailDao;
 import cn.stylefeng.guns.dao.FileResultDao;
 import cn.stylefeng.guns.modular.entity.BankDetail;
 import cn.stylefeng.guns.modular.entity.BusinessDetail;
+import cn.stylefeng.guns.modular.entity.CheckDetail;
 import cn.stylefeng.guns.modular.entity.FileResult;
 import com.google.common.collect.Lists;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,10 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,7 +81,12 @@ public class BusinessDetailService {
 		return true;
 	}
 
-	public List<Object> listResult(String date) {
+	/**
+	 * 对账
+	 * @param date
+	 * @return
+	 */
+	public List<CheckDetail> listResult(String date) {
 		//获取对账量表的记录
 		List<BusinessDetail> businessList = businessDetailDao.listBusinessDetail(date);
 		//银商 银联为主表
@@ -91,13 +96,25 @@ public class BusinessDetailService {
 		}
 		Map<String, BusinessDetail> businessMap = businessList.stream().
 				collect(Collectors.toMap(BusinessDetail::getIndexNo, e -> e, (key1, key2) -> key2));
+		List<CheckDetail> checkList = Lists.newArrayList();
 		bankDetails.forEach(e -> {
 			//检索参考号 即订单号
 			String indexNo = e.getIndexNo();
 			BusinessDetail businessDetail = businessMap.get(indexNo);
-
+//			BeanUtils.copyProperties();
+			CheckDetail checkDetail = new CheckDetail();
+			//银商有 中百有
+			if (!ObjectUtils.isEmpty(businessDetail)) {
+				BeanUtils.copyProperties(e, checkDetail);
+				checkDetail.setCheckStatus(0);
+			} else {
+				//银商有 中百无
+				//TODO
+				checkDetail.setCheckStatus(1);
+			}
+			checkList.add(checkDetail);
 		});
-		return null;
+		return checkList;
 	}
 
 }
