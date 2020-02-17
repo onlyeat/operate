@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -14,10 +15,15 @@ import java.math.BigDecimal;
  * @Date: 2020/02/14/18:17
  * @Description:
  */
+@Data
 public class BusinessDetail implements Serializable {
 
 	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
+	/**
+	 * 批次号
+	 */
+	private String fileBatchId;
 	/**
 	 * 商户编号       db_column: merchant_no
 	 */
@@ -123,4 +129,5 @@ public class BusinessDetail implements Serializable {
 		this.realAmount = StringUtils.isNotBlank(detailRow[9]) ? new BigDecimal(detailRow[9]) : null;
 		this.tradeType = detailRow[10];
 	}
+
 }

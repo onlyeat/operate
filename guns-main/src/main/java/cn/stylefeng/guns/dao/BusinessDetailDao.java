@@ -28,4 +28,6 @@ public interface BusinessDetailDao {
 	int delete(BusinessDetail entity);
 
 	int insertBatch(List<BusinessDetail> businessDetail);
+
+	List<BusinessDetail> listBusinessDetail(String fileBatchId);
 }

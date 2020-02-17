@@ -28,4 +28,6 @@ public interface BankDetailDao {
 	int delete(BankDetail entity);
 
 	int insertBatch(@Param("list") List<BankDetail> bankDetailsList);
+
+	List<BankDetail> listBankDetail(String fileBatchId);
 }

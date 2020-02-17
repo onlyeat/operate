@@ -31,12 +31,11 @@ public class BankDetailService {
 	/**
 	 * 微信对账文件导入
 	 *
-	 * @param pathName
-	 * @param fileName
+	 * @param fileName 文件名带路径
 	 * @return
 	 */
-	public Boolean importFile(String pathName, String fileName) {
-		File file = new File(String.format("%s%s", pathName, fileName));
+	public Boolean importFile(String date, String fileName) {
+		File file = new File(fileName);
 		BufferedReader bufferedReader = null;
 		try {
 			bufferedReader = new BufferedReader(new FileReader(file));
@@ -45,6 +44,7 @@ public class BankDetailService {
 		}
 		int line = 1;
 		String temp = null;
+		String fileBatchId = String.format("%s%s", date, TradeChannelEnum.WEI_XIN.getDesc());
 		List<BankDetail> bankDetailsList = Lists.newArrayList();
 		try {
 			while ((temp = bufferedReader.readLine()) != null) {
@@ -52,6 +52,7 @@ public class BankDetailService {
 					//微信汇总 第一行 36,20100.00,19979.40,0,0.00,0.00
 					String[] firstRow = temp.split(",");
 					FileResult fileResult = new FileResult(firstRow[0], new BigDecimal(firstRow[1]), new BigDecimal(firstRow[2]));
+					fileResult.setFileBatchId(fileBatchId);
 					fileResult.setFileDate(new Timestamp(new Date().getTime()));
 					fileResult.setChannel(TradeChannelEnum.WEI_XIN.getDesc());
 					fileResultDao.insert(fileResult);
@@ -59,6 +60,7 @@ public class BankDetailService {
 				//1558678941,,20191105,1105205836,,,,100.00,0.60,99.40,1105205836,,S22,,,4200000424201911054718388463,PURH1911011000000526,0,,,,,,
 				String[] detailRow = temp.split(",");
 				BankDetail bankDetail = new BankDetail(detailRow);
+				bankDetail.setFileBatchId(fileBatchId);
 				bankDetailsList.add(bankDetail);
 				line++;
 			}

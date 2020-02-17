@@ -16,9 +16,11 @@ public enum TradeChannelEnum {
     //    WX微信
     //    ZFB支付宝
     //    YSF云闪付
-    WEI_XIN(1, "WX"),
-    ZHI_FU_BAO(2, "ZFB"),
-    YUN_SHAN_FU(3, "YSF");
+    //    FJ富基
+	WEI_XIN(1, "WX"),
+	ZHI_FU_BAO(2, "ZFB"),
+	YUN_SHAN_FU(3, "YSF"),
+	FU_JI(4, "FJ");
 
     private Integer code;
 

@@ -4,6 +4,7 @@
 
     <resultMap id="businessDetailMap" type="cn.stylefeng.guns.modular.entity.BusinessDetail">
         <result property="id" column="id"/>
+        <result property="fileBatchId" column="file_batch_id"/>
         <result property="merchantNo" column="merchant_no"/>
         <result property="terminal" column="terminal"/>
         <result property="clearDate" column="clear_date"/>
@@ -29,7 +30,7 @@
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-        id ,merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,trade_channel ,trade_amount ,discount_amount ,real_amount ,trade_type ,product_info ,bak1 ,bak2 ,bak3 ,bak4 ,bak5 ,bak6 ,bak7 ,bak8 
+        id , file_batch_id, merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,trade_channel ,trade_amount ,discount_amount ,real_amount ,trade_type ,product_info ,bak1 ,bak2 ,bak3 ,bak4 ,bak5 ,bak6 ,bak7 ,bak8
 	    ]]>
 	</sql>
 	
@@ -38,6 +39,7 @@
             select last_insert_id()
         </selectKey>
         INSERT INTO business_detail (
+            file_batch_id,
         	merchant_no,
         	terminal,
         	clear_date,
@@ -59,6 +61,7 @@
         	bak7,
         	bak8
         ) VALUES (
+            #{fileBatchId},
         	#{merchantNo},
         	#{terminal},
         	#{clearDate},
@@ -87,29 +90,24 @@
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into business_detail ()
+		insert into business_detail (file_batch_id, merchant_no,terminal,
+        clear_date,trade_date,trade_card_no,
+        index_no,tradeChannel, trade_amount,discount_amount, real_amount, trade_type)
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
 			(
-			#{item.merchantId,jdbcType=VARCHAR},
-			#{item.name,jdbcType=VARCHAR},
-			#{item.nickname,jdbcType=VARCHAR},
-			#{item.phone,jdbcType=VARCHAR},
-			#{item.loginName,jdbcType=VARCHAR},
-			#{item.password,jdbcType=VARCHAR},
-			#{item.wechat,jdbcType=VARCHAR},
-			#{item.idCard,jdbcType=VARCHAR},
-			#{item.idCardExpire,jdbcType=TIMESTAMP},
-			#{item.depotCode,jdbcType=VARCHAR},
-			#{item.depotName,jdbcType=VARCHAR},
-			#{item.depotFloor,jdbcType=VARCHAR},
-			#{item.depotDoor,jdbcType=VARCHAR},
-			#{item.status,jdbcType=INTEGER},
-			#{item.accessToken,jdbcType=VARCHAR},
-			#{item.createBy,jdbcType=BIGINT},
-			#{item.updateBy,jdbcType=BIGINT},
-			#{item.createTime,jdbcType=TIMESTAMP},
-			#{item.updateTime,jdbcType=TIMESTAMP}
+            #{item.fileBatchId,jdbcType=VARCHAR},
+			#{item.merchantNo,jdbcType=VARCHAR},
+			#{item.terminal,jdbcType=VARCHAR},
+			#{item.clearDate,jdbcType=VARCHAR},
+			#{item.tradeDate,jdbcType=VARCHAR},
+			#{item.tradeCardNo,jdbcType=VARCHAR},
+			#{item.indexNo,jdbcType=VARCHAR},
+			#{item.tradeChannel,jdbcType=VARCHAR},
+			#{item.tradeAmount,jdbcType=DECIMAL},
+			#{item.discountAmount,jdbcType=DECIMAL},
+			#{item.realAmount,jdbcType=DECIMAL},
+			#{item.tradeType,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>
@@ -150,6 +148,12 @@
 	    SELECT <include refid="columns"/> FROM business_detail  WHERE 
         id = #{id} 
     </select>
+
+    <!--根据批量号获取业务数据-->
+    <select id="listBusinessDetail" resultType="cn.stylefeng.guns.modular.entity.BusinessDetail">
+        SELECT<include refid="columns"/> FROM business_detail  WHERE
+        file_batch_id = #{fileBatchId}
+    </select>
     
     <select id="query" resultMap="businessDetailMap">
 	    SELECT <include refid="columns"/> FROM business_detail 
@@ -178,6 +182,7 @@
 	     </trim>
 	     <if test="customSort != null and customSort!='' ">ORDER BY ${customSort}</if>
     </select>
+
 
 </mapper>
 

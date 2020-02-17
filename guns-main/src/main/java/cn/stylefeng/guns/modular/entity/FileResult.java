@@ -20,6 +20,10 @@ public class FileResult implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
+     * 对账文件批次号 对账文件日期 + 文件渠道 eg 20200217YSF
+     */
+    private String fileBatchId;
+    /**
      * 对账文件日期       db_column: file_date
      */
     private java.sql.Timestamp fileDate;

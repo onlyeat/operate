@@ -22,6 +22,11 @@ public class BankDetail {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+	/**
+	 * 批次号
+	 */
+	private String fileBatchId;
     /**
      * 商户编号       db_column: merchant_no
      */

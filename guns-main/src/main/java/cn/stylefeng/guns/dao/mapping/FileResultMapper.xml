@@ -4,6 +4,7 @@
 
     <resultMap id="fileResultMap" type="cn.stylefeng.guns.modular.entity.FileResult">
         <result property="id" column="id"/>
+        <result property="fileBatchId" column="file_batch_id"/>
         <result property="fileDate" column="file_date"/>
         <result property="channel" column="channel"/>
         <result property="tradeNumber" column="trade_number"/>
@@ -17,7 +18,7 @@
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-        id ,file_date ,channel ,trade_number ,trade_amount ,clear_amount ,diff_number ,diff_amount ,diff_clear_amount 
+        id ,file_batch_id, file_date ,channel ,trade_number ,trade_amount ,clear_amount ,diff_number ,diff_amount ,diff_clear_amount
 	    ]]>
 	</sql>
 	
@@ -26,6 +27,7 @@
             select last_insert_id()
         </selectKey>
         INSERT INTO file_result (
+            file_batch_id,
         	file_date,
         	channel,
         	trade_number,
@@ -35,6 +37,7 @@
         	diff_amount,
         	diff_clear_amount
         ) VALUES (
+            #{fileBatchId},
         	#{fileDate},
         	#{channel},
         	#{tradeNumber},
