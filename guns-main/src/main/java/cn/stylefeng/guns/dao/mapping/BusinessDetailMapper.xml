@@ -92,7 +92,7 @@
 		</selectKey>
 		insert into business_detail (file_batch_id, merchant_no,terminal,
         clear_date,trade_date,trade_card_no,
-        index_no,tradeChannel, trade_amount,discount_amount, real_amount, trade_type)
+        index_no,trade_channel, trade_amount,discount_amount, real_amount, trade_type)
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
 			(

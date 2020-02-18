@@ -124,17 +124,23 @@ public class BankDetail {
 	//1558678941,,20191105,1105205836,,,,100.00,  0.60,  99.40,  1105205836,       ,S22      ,    ,    , 4200000424201911054718388463,PURH1911011000000526,0,,,,,,
 	// 0-商户号    2-清算日期 3-交易日期   7-交易金额 8-手续费 9-入账金额 10-原交易日期      13-交易类型            16-不知 TODO                  17- 订单号/索引号
 
+
+	public BankDetail() {
+	}
+
 	/**
 	 * 明细行
 	 * @param detailRow
 	 */
 	public BankDetail(String detailRow[]) {
+		//TODO 卡号待填
 		this.merchantNo = detailRow[0];
 		this.clearDate = detailRow[2];
 		this.tradeDate = detailRow[3];
-		this.indexNo = detailRow[17];
+		this.indexNo = detailRow[16];
 		this.tradeAmount = new BigDecimal(detailRow[7]);
 		this.clearCommission = new BigDecimal(detailRow[8]);
 		this.clearIncome = new BigDecimal(detailRow[9]);
 	}
+
 }
