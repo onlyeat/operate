@@ -105,10 +105,8 @@ public class BusinessDetailService {
 		Map<String, BusinessDetail> businessMap = businessList.stream().
 				collect(Collectors.toMap(BusinessDetail::getIndexNo, e -> e, (key1, key2) -> key2));
 		List<CheckDetail> checkList = Lists.newArrayList();
-//		Iterator<BankDetail> iterator = bankDetailList.iterator();
-//		while (iterator.hasNext()) {
-//
-//		}
+		List<BankDetail> removeBankList = Lists.newArrayList();
+		List<BusinessDetail> removeBusinessList = Lists.newArrayList();
 		bankDetailList.forEach(bankDetail -> {
 			//检索参考号 即订单号
 			String indexNo = bankDetail.getIndexNo();
@@ -124,8 +122,8 @@ public class BusinessDetailService {
 				} else {
 					checkDetail.setCheckStatus(CheckStatusEnum.WRONG_AMOUNT.getCode());
 				}
-				bankDetailList.remove(bankDetail);
-				businessList.remove(businessDetail);
+				removeBankList.add(bankDetail);
+				removeBusinessList.add(businessDetail);
 			}
 			//银商有 中百无
 			if (ObjectUtils.isEmpty(businessDetail)) {
@@ -138,6 +136,8 @@ public class BusinessDetailService {
 			}
 			checkList.add(checkDetail);
 		});
+		bankDetailList.removeAll(removeBankList);
+		businessList.removeAll(removeBusinessList);
 		//银商剩下
 		if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(bankDetailList)) {
 			bankDetailList.forEach(bankDetailLeave ->{
