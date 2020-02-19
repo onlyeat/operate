@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.service;
 
+import cn.stylefeng.guns.base.enums.CheckStatusEnum;
 import cn.stylefeng.guns.base.enums.TradeChannelEnum;
 import cn.stylefeng.guns.dao.BankDetailDao;
 import cn.stylefeng.guns.dao.BusinessDetailDao;
@@ -22,10 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,10 +41,11 @@ public class BusinessDetailService {
 
 	/**
 	 * 富基业务数据入库
+	 *
 	 * @param fileName
 	 * @return
 	 */
-	public Boolean importFile(String date ,String fileName) {
+	public Boolean importFile(String date, String fileName) {
 		File file = new File(fileName);
 		BufferedReader bufferedReader = null;
 		try {
@@ -91,6 +90,7 @@ public class BusinessDetailService {
 
 	/**
 	 * 对账
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -98,30 +98,68 @@ public class BusinessDetailService {
 		//获取对账量表的记录
 		List<BusinessDetail> businessList = businessDetailDao.listBusinessDetail(date);
 		//银商 银联为主表
-		List<BankDetail> bankDetails = bankDetailDao.listBankDetail(date);
-		if(CollectionUtils.isEmpty(businessList) || bankDetails.isEmpty()) {
+		List<BankDetail> bankDetailList = bankDetailDao.listBankDetail(date);
+		if (CollectionUtils.isEmpty(businessList) || bankDetailList.isEmpty()) {
 			return Collections.EMPTY_LIST;
 		}
 		Map<String, BusinessDetail> businessMap = businessList.stream().
 				collect(Collectors.toMap(BusinessDetail::getIndexNo, e -> e, (key1, key2) -> key2));
 		List<CheckDetail> checkList = Lists.newArrayList();
-		bankDetails.forEach(e -> {
+//		Iterator<BankDetail> iterator = bankDetailList.iterator();
+//		while (iterator.hasNext()) {
+//
+//		}
+		bankDetailList.forEach(bankDetail -> {
 			//检索参考号 即订单号
-			String indexNo = e.getIndexNo();
+			String indexNo = bankDetail.getIndexNo();
 			BusinessDetail businessDetail = businessMap.get(indexNo);
-//			BeanUtils.copyProperties();
+			//BeanUtils.copyProperties();
 			CheckDetail checkDetail = new CheckDetail();
 			//银商有 中百有
 			if (!ObjectUtils.isEmpty(businessDetail)) {
-				BeanUtils.copyProperties(e, checkDetail);
-				checkDetail.setCheckStatus(0);
-			} else {
-				//银商有 中百无
-				//TODO
-				checkDetail.setCheckStatus(1);
+				BeanUtils.copyProperties(bankDetail, checkDetail);
+				//金额相等
+				if (0 == businessDetail.getTradeAmount().compareTo(bankDetail.getTradeAmount())) {
+					checkDetail.setCheckStatus(CheckStatusEnum.OK.getCode());
+				} else {
+					checkDetail.setCheckStatus(CheckStatusEnum.WRONG_AMOUNT.getCode());
+				}
+				bankDetailList.remove(bankDetail);
+				businessList.remove(businessDetail);
+			}
+			//银商有 中百无
+			if (ObjectUtils.isEmpty(businessDetail)) {
+				checkDetail.setMerchantNo(bankDetail.getMerchantNo());
+				checkDetail.setClearDate(bankDetail.getClearDate());
+				checkDetail.setTradeDate(bankDetail.getTradeDate());
+				checkDetail.setIndexNo(bankDetail.getIndexNo());
+				checkDetail.setTradeAmount(bankDetail.getTradeAmount());
+				checkDetail.setCheckStatus(CheckStatusEnum.ZHONG_BAI_LESS.getCode());
 			}
 			checkList.add(checkDetail);
 		});
+		//银商剩下
+		if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(bankDetailList)) {
+			bankDetailList.forEach(bankDetailLeave ->{
+				CheckDetail checkDetail = new CheckDetail();
+				checkDetail.setMerchantNo(bankDetailLeave.getMerchantNo());
+				checkDetail.setClearDate(bankDetailLeave.getClearDate());
+				checkDetail.setTradeDate(bankDetailLeave.getTradeDate());
+				checkDetail.setIndexNo(bankDetailLeave.getIndexNo());
+				checkDetail.setTradeAmount(bankDetailLeave.getTradeAmount());
+				checkDetail.setCheckStatus(CheckStatusEnum.BANK_MORE_LEAVE.getCode());
+				checkList.add(checkDetail);
+			} );
+		}
+        //中百剩下的
+		if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(businessList)) {
+			businessList.forEach(bankDetailLeave -> {
+				CheckDetail checkDetail = new CheckDetail();
+				BeanUtils.copyProperties(bankDetailLeave, checkDetail);
+				checkDetail.setCheckStatus(CheckStatusEnum.ZHONG_BAI_MORE.getCode());
+				checkList.add(checkDetail);
+			});
+		}
 		return checkList;
 	}
 }

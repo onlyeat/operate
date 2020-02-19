@@ -14,9 +14,12 @@ import java.util.Map;
 public enum CheckStatusEnum {
 
 	OK(0, "勾兑正常"),
-	ZHONG_BAI_MORE(1, "中百多,银商少"),
-	ZHONG_BAI_LESS(2, "中百少,银行多"),
-	WRONG_AMOUNT(3, "交易金额不符");
+	ZHONG_BAI_MORE(1, "中百有,银商无"),
+	ZHONG_BAI_LESS(2, "中百无,银行有"),
+	WRONG_AMOUNT(3, "交易金额不符"),
+	BANK_MORE_LEAVE(4, "银商多"),
+	ZHONG_BAI_MORE_LEAVE(5, "中百多"),
+	UNCERTAIN(6, "不确定");
 
 	private Integer code;
 
