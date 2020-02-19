@@ -6,6 +6,7 @@ import cn.stylefeng.guns.controller.FtpOperation;
 import cn.stylefeng.guns.modular.entity.CheckDetail;
 import cn.stylefeng.guns.service.BankDetailService;
 import cn.stylefeng.guns.service.BusinessDetailService;
+import cn.stylefeng.guns.service.CheckDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class CheckFileDownLoad {
 	@Autowired
 	private BusinessDetailService businessDetailService;
 
+	@Autowired
+	private CheckDetailService checkDetailService;
+
 	//@Scheduled(fixedRate = 1000)
 	public void downWxFile() {
 		String day = DateUtil.format(new Date(), DatePattern.PURE_DATE_FORMAT);
@@ -41,6 +45,6 @@ public class CheckFileDownLoad {
 		//3- 对比对账文件入 结果明细表
 		List<CheckDetail> checkDetails = businessDetailService.listResult(day);
 		//4- 结果明细入库
-		//TODO
+		checkDetailService.insertBatch(checkDetails);
 	}
 }

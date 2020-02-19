@@ -1,18 +1,15 @@
 package cn.stylefeng.guns.schedule;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.stylefeng.guns.BaseTest;
 import cn.stylefeng.guns.controller.FtpOperation;
 import cn.stylefeng.guns.modular.entity.CheckDetail;
 import cn.stylefeng.guns.service.BankDetailService;
 import cn.stylefeng.guns.service.BusinessDetailService;
+import cn.stylefeng.guns.service.CheckDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +32,9 @@ public class CheckFileDownLoadTest extends BaseTest {
 	@Autowired
 	private BusinessDetailService businessDetailService;
 
+	@Autowired
+	private CheckDetailService checkDetailService;
+
 	@Test
 	public void testDownWxFile() {
 		String day = "20191105";
@@ -49,7 +49,7 @@ public class CheckFileDownLoadTest extends BaseTest {
 		//3- 对比对账文件入 结果明细表
 		List<CheckDetail> checkDetails = businessDetailService.listResult(day);
 		//4- 结果明细入库
-		//TODO
+		checkDetailService.insertBatch(checkDetails);
 	}
 
 	@Test
