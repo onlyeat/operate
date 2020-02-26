@@ -29,5 +29,5 @@ public interface BusinessDetailDao {
 
 	int insertBatch(List<BusinessDetail> businessDetail);
 
-	List<BusinessDetail> listBusinessDetail(String fileBatchId);
+	List<BusinessDetail> listBusinessDetail(@Param("fileBatchId") String fileBatchId, @Param("clearDate") String clearDate);
 }

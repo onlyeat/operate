@@ -49,7 +49,10 @@ public class CheckFileDownLoadTest extends BaseTest {
 		//3- 对比对账文件入 结果明细表
 		List<CheckDetail> checkDetails = businessDetailService.listResult(day);
 		//4- 结果明细入库
-		checkDetailService.insertBatch(checkDetails);
+		int affectRow = checkDetailService.insertBatch(checkDetails);
+		if (affectRow > 0) {
+			log.info("对账结果入库成功！");
+		}
 	}
 
 	@Test

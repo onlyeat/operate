@@ -23,7 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,13 +59,14 @@ public class BusinessDetailService {
 		int line = 1;
 		String temp = null;
 		List<BusinessDetail> businessDetailList = Lists.newArrayList();
+		String fileBatchId = String.format("%s%s", date, TradeChannelEnum.FU_JI.getDesc());
 		try {
 			while ((temp = bufferedReader.readLine()) != null) {
 				if (1 == line) {
 					//富基汇总 第一行 62|38400
 					String[] firstRow = temp.split("\\|");
 					FileResult fileResult = new FileResult();
-					fileResult.setFileBatchId(String.format("%s%s", date, TradeChannelEnum.FU_JI.getDesc()));
+					fileResult.setFileBatchId(fileBatchId);
 					fileResult.setTradeNumber(firstRow[0]);
 					fileResult.setTradeAmount(new BigDecimal(firstRow[1]));
 					fileResult.setFileDate(new Timestamp(new Date().getTime()));
@@ -75,6 +79,7 @@ public class BusinessDetailService {
 				String[] detailRow = temp.split("\\|");
 				log.info("富基明细第{}行", line);
 				BusinessDetail businessDetail = new BusinessDetail(detailRow);
+				businessDetail.setFileBatchId(fileBatchId);
 				businessDetailList.add(businessDetail);
 				line++;
 			}
@@ -95,10 +100,10 @@ public class BusinessDetailService {
 	 * @return
 	 */
 	public List<CheckDetail> listResult(String date) {
-		//获取对账量表的记录
-		List<BusinessDetail> businessList = businessDetailDao.listBusinessDetail(date);
+		//获取对账量表的记录 62 条FJ
+		List<BusinessDetail> businessList = businessDetailDao.listBusinessDetail(null, date);
 		//银商 银联为主表
-		List<BankDetail> bankDetailList = bankDetailDao.listBankDetail(date);
+		List<BankDetail> bankDetailList = bankDetailDao.listBankDetail(null, date);
 		if (CollectionUtils.isEmpty(businessList) || bankDetailList.isEmpty()) {
 			return Collections.EMPTY_LIST;
 		}
@@ -110,7 +115,8 @@ public class BusinessDetailService {
 		bankDetailList.forEach(bankDetail -> {
 			//检索参考号 即订单号
 			String indexNo = bankDetail.getIndexNo();
-			BusinessDetail businessDetail = businessMap.get(indexNo);
+			String realIndexNo = this.getRealIndexNo(indexNo, bankDetail.getTradeChannel());
+			BusinessDetail businessDetail = businessMap.get(realIndexNo);
 			//BeanUtils.copyProperties();
 			CheckDetail checkDetail = new CheckDetail();
 			//银商有 中百有
@@ -140,7 +146,7 @@ public class BusinessDetailService {
 		businessList.removeAll(removeBusinessList);
 		//银商剩下
 		if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(bankDetailList)) {
-			bankDetailList.forEach(bankDetailLeave ->{
+			bankDetailList.forEach(bankDetailLeave -> {
 				CheckDetail checkDetail = new CheckDetail();
 				checkDetail.setMerchantNo(bankDetailLeave.getMerchantNo());
 				checkDetail.setClearDate(bankDetailLeave.getClearDate());
@@ -149,9 +155,9 @@ public class BusinessDetailService {
 				checkDetail.setTradeAmount(bankDetailLeave.getTradeAmount());
 				checkDetail.setCheckStatus(CheckStatusEnum.BANK_MORE_LEAVE.getCode());
 				checkList.add(checkDetail);
-			} );
+			});
 		}
-        //中百剩下的
+		//中百剩下的
 		if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(businessList)) {
 			businessList.forEach(bankDetailLeave -> {
 				CheckDetail checkDetail = new CheckDetail();
@@ -161,5 +167,25 @@ public class BusinessDetailService {
 			});
 		}
 		return checkList;
+	}
+
+	private String getRealIndexNo(String indexNo, String tradeChannel) {
+		String realIndexNo = "";
+		switch (tradeChannel) {
+			case "WX":
+				//PURH1911011000000526
+				realIndexNo = indexNo.substring(4);
+				break;
+			case "ZFB":
+				//4280CHAG1911011000000500X759671
+				realIndexNo = indexNo.substring(8, 24);
+				break;
+			case "YSF":
+				realIndexNo = indexNo;
+				break;
+			default:
+				log.info("渠道未知，无法获取realIndexNo");
+		}
+		return realIndexNo;
 	}
 }

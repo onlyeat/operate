@@ -29,5 +29,5 @@ public interface BankDetailDao {
 
 	int insertBatch(@Param("list") List<BankDetail> bankDetailsList);
 
-	List<BankDetail> listBankDetail(String fileBatchId);
+	List<BankDetail> listBankDetail(@Param("fileBatchId") String fileBatchId, @Param("clearDate") String clearDate);
 }

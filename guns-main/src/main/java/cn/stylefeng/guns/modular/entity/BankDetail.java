@@ -27,6 +27,10 @@ public class BankDetail {
 	 * 批次号
 	 */
 	private String fileBatchId;
+	/**
+	 * 交易渠道WX微信 ZFB支付宝 YSF云闪付       db_column: trade_channel
+	 */
+	private java.lang.String tradeChannel;
     /**
      * 商户编号       db_column: merchant_no
      */

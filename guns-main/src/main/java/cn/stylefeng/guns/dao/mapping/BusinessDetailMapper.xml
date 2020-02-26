@@ -149,10 +149,13 @@
         id = #{id} 
     </select>
 
-    <!--根据批量号获取业务数据-->
+    <!--根据清算日期获取业务数据-->
     <select id="listBusinessDetail" resultType="cn.stylefeng.guns.modular.entity.BusinessDetail">
-        SELECT<include refid="columns"/> FROM business_detail  WHERE
-        file_batch_id = #{fileBatchId}
+        SELECT<include refid="columns"/> FROM business_detail
+            <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="fileBatchId != null and fileBatchId !='' "> and file_batch_id = #{fileBatchId}, </if>
+            <if test="clearDate != null and clearDate !='' "> and clear_date = #{clearDate} </if>
+            </trim>
     </select>
     
     <select id="query" resultMap="businessDetailMap">

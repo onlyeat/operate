@@ -5,6 +5,7 @@
     <resultMap id="bankDetailMap" type="cn.stylefeng.guns.modular.entity.BankDetail">
         <result property="id" column="id"/>
         <result property="fileBatchId" column="file_batch_id"/>
+        <result property="tradeChannel" column="trade_channel"/>
         <result property="merchantNo" column="merchant_no"/>
         <result property="terminal" column="terminal"/>
         <result property="clearDate" column="clear_date"/>
@@ -33,7 +34,7 @@
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-        id , file_batch_id, merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,sys_trace_no ,trade_amount ,clear_commission ,clear_income ,ori_trade_date ,ori_trace_no ,trade_type ,industry_infor ,auth_code ,identity_no ,bak1 ,bak2 ,bak3 ,bak4 ,bak5 ,bak6 ,bak7
+        id , file_batch_id, trade_channel, merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,sys_trace_no ,trade_amount ,clear_commission ,clear_income ,ori_trade_date ,ori_trace_no ,trade_type ,industry_infor ,auth_code ,identity_no ,bak1 ,bak2 ,bak3 ,bak4 ,bak5 ,bak6 ,bak7
 	    ]]>
 	</sql>
 	
@@ -43,6 +44,7 @@
         </selectKey>
         INSERT INTO bank_detail (
         	file_batch_id,
+            trade_channel,
             merchant_no,
         	terminal,
         	clear_date,
@@ -68,6 +70,7 @@
         	bak7
         ) VALUES (
             #{fileBatchId},
+            #{tradeChannel},
         	#{merchantNo},
         	#{terminal},
         	#{clearDate},
@@ -99,13 +102,14 @@
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into bank_detail (file_batch_id, merchant_no,clear_date,
+		insert into bank_detail (file_batch_id, trade_channel, merchant_no,clear_date,
         trade_date,index_no,trade_amount,
         clear_commission, clear_income)
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
 			(
             #{item.fileBatchId,jdbcType=VARCHAR},
+            #{item.tradeChannel,jdbcType=VARCHAR},
 			#{item.merchantNo,jdbcType=VARCHAR},
 			#{item.clearDate,jdbcType=VARCHAR},
 			#{item.tradeDate,jdbcType=VARCHAR},
@@ -158,8 +162,11 @@
     </select>
 
     <select id="listBankDetail" resultType="cn.stylefeng.guns.modular.entity.BankDetail">
-        SELECT <include refid="columns"/> FROM bank_detail  WHERE
-        file_batch_id = #{fileBatchId}
+        SELECT <include refid="columns"/> FROM bank_detail
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="fileBatchId != null and fileBatchId !='' "> and file_batch_id = #{fileBatchId}, </if>
+            <if test="clearDate != null and clearDate !='' "> and clear_date = #{clearDate} </if>
+        </trim>
     </select>
     
     <select id="query" resultMap="bankDetailMap">
