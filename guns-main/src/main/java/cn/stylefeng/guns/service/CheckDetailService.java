@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.service;
 
+import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.dao.CheckDetailDao;
 import cn.stylefeng.guns.modular.entity.CheckDetail;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,7 +33,8 @@ public class CheckDetailService {
 		return checkDetailDao.insertBatch(checkDetailList);
 	}
 
-	public Page<Map<String, Object>> queryList(String clearDate, String indexNo, String tradeChannel, Integer checkStatus) {
-		return null;
+	public Page<Map<String,Object>> queryList(CheckDetail checkDetail) {
+		Page page = LayuiPageFactory.defaultPage();
+		return checkDetailDao.listCheckDetailByCondition(page, checkDetail);
 	}
 }

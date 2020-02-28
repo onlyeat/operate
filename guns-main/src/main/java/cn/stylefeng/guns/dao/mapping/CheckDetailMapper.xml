@@ -149,7 +149,19 @@
         SELECT<include refid="columns"/> FROM business_detail  WHERE
         file_batch_id = #{fileBatchId}
     </select>
-    
+
+    <!--对账结果页根据条件查询 -->
+    <select id="listCheckDetailByCondition" resultType="java.util.Map">
+        SELECT<include refid="columns"/> FROM business_detail
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+        <if test="fileBatchId != null and fileBatchId !='' "> and file_batch_id = #{fileBatchId}, </if>
+        <if test="merchantNo != null and merchantNo !='' "> and merchant_no = #{merchantNo}, </if>
+        <if test="clearDate != null and clearDate !='' "> and clear_date = #{clearDate}, </if>
+        <if test="indexNo != null and indexNo !='' "> and index_no = #{indexNo}, </if>
+        <if test="tradeChannel != null and tradeChannel !='' "> and trade_channel = #{tradeChannel}</if>
+    </trim>
+    </select>
+
     <!--<select id="query" resultMap="businessDetailMap">-->
 	    <!--SELECT <include refid="columns"/> FROM business_detail -->
 	    <!--<trim prefix="WHERE" prefixOverrides="AND |OR ">-->

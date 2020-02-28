@@ -2,12 +2,12 @@ package cn.stylefeng.guns.controller;
 
 import cn.stylefeng.guns.base.pojo.page.LayuiPageFactory;
 import cn.stylefeng.guns.base.pojo.page.LayuiPageInfo;
+import cn.stylefeng.guns.modular.entity.CheckDetail;
 import cn.stylefeng.guns.service.CheckDetailService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -35,22 +35,15 @@ public class CheckDetailController {
 
 	/**
 	 * 对账结果数据
-	 * @param clearDate
-	 * @param indexNo
-	 * @param tradeChannel
-	 * @param checkStatus
+	 * @param checkDetail
 	 * @return
 	 */
 	@RequestMapping("/queryList")
-	public LayuiPageInfo queryList(@RequestParam(value = "clearDate", required = false) String clearDate,
-								   @RequestParam(value = "indexNo", required = false) String indexNo,
-								   @RequestParam(value = "tradeChannel", required = false) String tradeChannel,
-								   @RequestParam(value = "checkStatus", required = false) Integer checkStatus) {
-
-		Page<Map<String, Object>> merchants = checkDetailService.queryList(clearDate, indexNo, tradeChannel, checkStatus);
+	public LayuiPageInfo queryList(CheckDetail checkDetail) {
+		Page<Map<String, Object>> checkDetailList = checkDetailService.queryList(checkDetail);
 		//  Page wrapped = new UserWrapper(merchants).wrap();
 //        Page = merchantService.fillObject(merchants);
-		return LayuiPageFactory.createPageInfo(merchants);
+		return LayuiPageFactory.createPageInfo(checkDetailList);
 	}
 
 //	@RequestMapping("/addView")
