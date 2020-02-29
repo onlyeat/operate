@@ -158,7 +158,8 @@
         <if test="merchantNo != null and merchantNo !='' "> and merchant_no = #{merchantNo}, </if>
         <if test="clearDate != null and clearDate !='' "> and clear_date = #{clearDate}, </if>
         <if test="indexNo != null and indexNo !='' "> and index_no = #{indexNo}, </if>
-        <if test="tradeChannel != null and tradeChannel !='' "> and trade_channel = #{tradeChannel}</if>
+        <if test="tradeChannel != null and tradeChannel !='' "> and trade_channel = #{tradeChannel},</if>
+        <if test="checkStatus != null and checkStatus !='' "> and check_status = #{checkStatus}</if>
     </trim>
     </select>
 
