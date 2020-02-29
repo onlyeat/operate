@@ -20,7 +20,6 @@ import java.util.List;
  * @Description:
  */
 @Slf4j
-
 public class CheckFileDownLoadTest extends BaseTest {
 
 	@Autowired
@@ -42,9 +41,9 @@ public class CheckFileDownLoadTest extends BaseTest {
 		//1- ftp 获取对账文件
 		//ftpOperation.downloadFile2("G:/javaTest/", "G_ZBCC_POST_[20191105]_W.txt", "C:/");
 		//2- 入库
-		Boolean wBoolean = bankDetailService.importFile(day,"G:/javaTest/G_ZBCC_POST_[20191105]_W.txt");
+		Boolean wBoolean = bankDetailService.importFile(day, "G:/javaTest/G_ZBCC_POST_[20191105]_W.txt");
 		log.info("微信对账文件入库结果{}", wBoolean.booleanValue() == true ? "成功" : "失败");
-		Boolean bBoolean = businessDetailService.importFile(day,"G:/javaTest/ZBJT_ONLINE_[20191105].txt");
+		Boolean bBoolean = businessDetailService.importFile(day, "G:/javaTest/ZBJT_ONLINE_[20191105].txt");
 		log.info("富基对账文件入库结果{}", bBoolean.booleanValue() == true ? "成功" : "失败");
 		//3- 对比对账文件入 结果明细表
 		List<CheckDetail> checkDetails = businessDetailService.listResult(day);
@@ -56,7 +55,7 @@ public class CheckFileDownLoadTest extends BaseTest {
 	}
 
 	@Test
-	public void testLineSplit(){
+	public void testLineSplit() {
 		String tmp = "898420154119049||20191105|1105100940||1911011000000467|ZFB|200|||ZBQB|||||||||";
 //		String tmp = "898420154119049|20191105|1105100940||1911011000000467|ZFB|200|ZBQB";
 		String[] split = tmp.split("\\|");
