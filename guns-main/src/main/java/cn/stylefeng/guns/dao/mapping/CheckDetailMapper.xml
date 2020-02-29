@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.stylefeng.guns.dao.CheckDetailDao">
 
-    <resultMap id="businessDetailMap" type="cn.stylefeng.guns.modular.entity.CheckDetail">
+    <resultMap id="checkDetailMap" type="cn.stylefeng.guns.modular.entity.CheckDetail">
         <result property="id" column="id"/>
         <result property="fileBatchId" column="file_batch_id"/>
         <result property="merchantNo" column="merchant_no"/>
@@ -22,7 +22,7 @@
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-        id , file_batch_id, merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,trade_channel ,trade_amount ,discount_amount ,real_amount ,trade_type ,check_status
+        id , file_batch_id, merchant_no ,terminal ,clear_date ,trade_date ,trade_card_no ,index_no ,trade_channel ,trade_amount ,discount_amount ,real_amount ,trade_type, check_status
 	    ]]>
 	</sql>
 	<!---->
@@ -30,7 +30,7 @@
     	<!--<selectKey resultType="long" keyProperty="id" >-->
             <!--select last_insert_id()-->
         <!--</selectKey>-->
-        <!--INSERT INTO business_detail (-->
+        <!--INSERT INTO check_detail (-->
             <!--file_batch_id,-->
         	<!--merchant_no,-->
         	<!--terminal,-->
@@ -108,7 +108,7 @@
 	</insert>
 
 	<!--<update id="update"  parameterType="cn.stylefeng.guns.modular.entity.BusinessDetail">-->
-        <!--UPDATE business_detail <trim prefix="SET" suffixOverrides=",">  -->
+        <!--UPDATE check_detail <trim prefix="SET" suffixOverrides=",">  -->
 	        <!--<if test="merchantNo != null "> merchant_no = #{merchantNo} ,</if>-->
 	        <!--<if test="terminal != null "> terminal = #{terminal} ,</if>-->
 	        <!--<if test="clearDate != null "> clear_date = #{clearDate} ,</if>-->
@@ -135,36 +135,45 @@
     <!--</update>-->
 
     <!--<delete id="delete">-->
-        <!--DELETE FROM business_detail WHERE-->
+        <!--DELETE FROM check_detail WHERE-->
         <!--id = #{id} -->
     <!--</delete>-->
     <!---->
-    <!--<select id="getById" parameterType="long" resultMap="businessDetailMap">-->
-	    <!--SELECT <include refid="columns"/> FROM business_detail  WHERE -->
+    <!--<select id="getById" parameterType="long" resultMap="checkDetailMap">-->
+	    <!--SELECT <include refid="columns"/> FROM check_detail  WHERE -->
         <!--id = #{id} -->
     <!--</select>-->
 
     <!--根据批量号获取业务数据-->
     <select id="listCheckDetail" resultType="cn.stylefeng.guns.modular.entity.CheckDetail">
-        SELECT<include refid="columns"/> FROM business_detail  WHERE
+        SELECT<include refid="columns"/> FROM check_detail  WHERE
         file_batch_id = #{fileBatchId}
     </select>
 
     <!--对账结果页根据条件查询 -->
-    <select id="listCheckDetailByCondition" resultType="java.util.Map">
-        SELECT<include refid="columns"/> FROM business_detail
-        <trim prefix="WHERE" prefixOverrides="AND |OR">
-        <if test="fileBatchId != null and fileBatchId !='' "> and file_batch_id = #{fileBatchId}, </if>
-        <if test="merchantNo != null and merchantNo !='' "> and merchant_no = #{merchantNo}, </if>
-        <if test="clearDate != null and clearDate !='' "> and clear_date = #{clearDate}, </if>
-        <if test="indexNo != null and indexNo !='' "> and index_no = #{indexNo}, </if>
-        <if test="tradeChannel != null and tradeChannel !='' "> and trade_channel = #{tradeChannel},</if>
-        <if test="checkStatus != null and checkStatus !='' "> and check_status = #{checkStatus}</if>
-    </trim>
+    <select id="listCheckDetailByCondition" resultMap="checkDetailMap" resultType="map">
+        SELECT <include refid="columns"/> FROM check_detail
+        <where>
+          <if test="merchantNo != null and merchantNo !='' ">
+           and merchant_no = #{merchantNo}
+          </if>
+          <if test="clearDate != null and clearDate !='' ">
+           and clear_date = #{clearDate}
+          </if>
+          <if test="indexNo != null and indexNo !='' ">
+           and index_no = #{indexNo}
+          </if>
+          <if test="tradeChannel != null and tradeChannel !='' ">
+           and trade_channel = #{tradeChannel}
+          </if>
+          <if test="checkStatus != null ">
+           and check_status = #{checkStatus}
+          </if>
+        </where>
     </select>
 
-    <!--<select id="query" resultMap="businessDetailMap">-->
-	    <!--SELECT <include refid="columns"/> FROM business_detail -->
+    <!--<select id="query" resultMap="checkDetailMap">-->
+	    <!--SELECT <include refid="columns"/> FROM check_detail -->
 	    <!--<trim prefix="WHERE" prefixOverrides="AND |OR ">-->
 	        <!--<if test="vo.id != null ">AND id = #{vo.id} </if>-->
 	        <!--<if test="vo.merchantNo != null and vo.merchantNo != '' ">AND merchant_no = #{vo.merchantNo} </if>-->

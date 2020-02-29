@@ -21,5 +21,10 @@ public interface CheckDetailDao {
 
 	List<CheckDetail> listCheckDetail();
 
-	Page<Map<String,Object>> listCheckDetailByCondition(Page page, CheckDetail checkDetail);
+	Page<Map<String,Object>> listCheckDetailByCondition(@Param("page") Page page,
+														@Param("merchantNo") String merchantNo,
+														@Param("clearDate") String clearDate,
+														@Param("indexNo") String indexNo,
+														@Param("tradeChannel") String tradeChannel,
+														@Param("checkStatus") Integer checkStatus);
 }

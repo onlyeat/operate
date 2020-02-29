@@ -44,14 +44,7 @@ public class CheckDetailController {
 	@ResponseBody
 	public LayuiPageInfo queryList(CheckDetail checkDetail) {
 		Page<Map<String, Object>> checkDetailList = checkDetailService.queryList(checkDetail);
-		//  Page wrapped = new UserWrapper(merchants).wrap();
-//        Page = merchantService.fillObject(merchants);
 		return LayuiPageFactory.createPageInfo(checkDetailList);
 	}
 
-//	@RequestMapping("/addView")
-//	public ModelAndView addView(ModelAndView mv){
-//		mv.setViewName(PREFIX + "merchant_add.html");
-//		return mv;
-//	}
 }

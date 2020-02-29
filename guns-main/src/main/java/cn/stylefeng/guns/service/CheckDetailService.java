@@ -35,6 +35,8 @@ public class CheckDetailService {
 
 	public Page<Map<String,Object>> queryList(CheckDetail checkDetail) {
 		Page page = LayuiPageFactory.defaultPage();
-		return checkDetailDao.listCheckDetailByCondition(page, checkDetail);
+		return checkDetailDao.listCheckDetailByCondition(page,
+				checkDetail.getMerchantNo(), checkDetail.getClearDate(), checkDetail.getIndexNo(),
+				checkDetail.getTradeChannel(), checkDetail.getCheckStatus());
 	}
 }

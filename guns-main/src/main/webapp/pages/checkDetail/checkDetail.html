@@ -1,4 +1,4 @@
-@layout("/common/_tree_container.html",{plugins:["ztree"],js:["/assets/modular/business/merchant/merchant.js"]}){
+@layout("/common/_tree_container.html",{plugins:["ztree"],js:["/assets/modular/business/checkDetail/checkDetail.js"]}){
 
 <div class="layui-body-header">
     <span class="layui-body-header-title">对账管理</span>
@@ -21,26 +21,24 @@
                                         商户号<input id="merchantNo" class="layui-input" type="text" placeholder=""/>
                                     </div>
 
-                                    <div class="search-block">
-                                        <div class="search-title" style="width: 80px;">交易渠道</div>
-                                        <div class="zc-j-dropdown">
-                                            <select id="tradeChannel" name="tradeChannel" lay-verify="required">
-                                                <option value=>全部</option>
-                                                <option value=1>微信</option>
-                                                <option value=2>支付宝</option>
-                                                <option value=3>云闪付</option>
-                                            </select>
-                                        </div>
+                                    <div class="search-title" style="width: 80px;">交易渠道</div>
+                                    <div class="zc-j-dropdown">
+                                        <select id="tradeChannel" name="tradeChannel" lay-verify="required">
+                                            <option value=>全部</option>
+                                            <option value=1>微信</option>
+                                            <option value=2>支付宝</option>
+                                            <option value=3>云闪付</option>
+                                        </select>
                                     </div>
 
-                                        <div class="search-title" style="width: 80px;">对账状态</div>
-                                        <div class="zc-j-dropdown">
-                                            <select id="checkStatus" name="checkStatus" lay-verify="required">
-                                                <option value=>全部</option>
-                                                <option value=0>勾兑正常</option>
-                                                <option value=1>错账</option>
-                                            </select>
-                                        </div>
+                                    <div class="search-title" style="width: 80px;">对账状态</div>
+                                    <div class="zc-j-dropdown">
+                                        <select id="checkStatus" name="checkStatus" lay-verify="required">
+                                            <option value=>全部</option>
+                                            <option value=0>勾兑正常</option>
+                                            <option value=1>错账</option>
+                                        </select>
+                                    </div>
 
                                     <div class="layui-inline">
                                         <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
@@ -56,4 +54,11 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="userBind">
+    {{#  if(d.deviceId != null && d.deviceId != ''){ }}
+    已绑定
+    {{# } else {d.status == 0 }}
+    未绑定
+    {{#  } }}
+</script>
 @}

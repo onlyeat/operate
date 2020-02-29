@@ -23,15 +23,35 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
 
     /**
      * 初始化表格的列
+     * trade_channel,merchant_no, clear_date, trade_date, index_no,trade_amount, check_status
      */
     checkDetail.initColumn = function () {
         return [[
             {type: 'checkbox'},
             {field: 'id', hide: true, sort: true, title: 'id'},
-            {field: 'name', align: "center", sort: true, title: '商户名称'},
-            {field: 'code', align: "center", sort: true, title: '商户编码'},
-            {field: 'createBy', align: "center", sort: true, title: '创建者'},
-            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+            {field: 'tradeChannel', align: "center", sort: true, title: '交易渠道', templet: function (d) {
+                    if (d.tradeChannel == "WX" )  {
+                        return "微信";
+                    }
+                    if (d.tradeChannel == "ZFB" )  {
+                        return "支付宝";
+                    }
+                    if (d.tradeChannel == "YSF" )  {
+                        return "云闪付";
+                    }
+                }},
+            {field: 'merchantNo', align: "center", title: '商户号'},
+            {field: 'clearDate', align: "center", title: '清算日期'},
+            {field: 'tradeDate', align: "center", sort: true, title: '交易日期'},
+            {field: 'indexNo', align: "center", title: '流水号'},
+            {field: 'tradeAmount', align: "center", title: '交易金额'},
+            {field: 'checkStatus', align: "center", sort: true, title: '对账状态', templet: function (d) {
+                    if (d.checkStatus === 0) {
+                        return "正常";
+                    } else {
+                        return "错账";
+                    }
+                }}
         ]];
     };
 
@@ -42,7 +62,6 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         var queryData = {};
         queryData['merchantNo'] = $("#merchantNo").val();
         queryData['clearDate'] = $("#clearDate").val();
-        queryData['clearDate'] = $("#clearDate").val();
         queryData['indexNo'] = $("#indexNo").val();
         queryData['tradeChannel'] = $("#tradeChannel").val();
         queryData['checkStatus'] = $("#checkStatus").val();
@@ -51,33 +70,6 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         });
     };
 
-    // /**
-    //  * 点击编辑角色
-    //  *
-    //  * @param data 点击按钮时候的行数据
-    //  */
-    // merchant.onEditRole = function (data) {
-    //     func.open({
-    //         height: 470,
-    //         title: '修改角色',
-    //         content: Feng.ctxPath + "/merchant/merchant_edit?merchantId=" + data.merchantId,
-    //         tableId: merchant.tableId
-    //     });
-    // };
-
-    // /**
-    //  * 导出excel按钮
-    //  */
-    // merchant.exportExcel = function () {
-    //     var checkRows = table.checkStatus(merchant.tableId);
-    //     if (checkRows.data.length === 0) {
-    //         Feng.error("请选择要导出的数据");
-    //     } else {
-    //         table.exportFile(tableResult.config.id, checkRows.data, 'xls');
-    //     }
-    // };
-
-
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + checkDetail.tableId,
@@ -85,7 +77,15 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         page: true,
         height: "full-98",
         cellMinWidth: 100,
-        cols: checkDetail.initColumn()
+        cols: checkDetail.initColumn(),
+        page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+            ,groups: 5 //只显示 1 个连续页码
+            ,first: '首页' //不显示首页
+            ,last: '尾页' //显示尾页
+            }
+        ,height: 'full-240'
+        ,limit: 20
     });
 
     // 搜索按钮点击事件
@@ -117,3 +117,4 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     //     }
     // });
 });
+
