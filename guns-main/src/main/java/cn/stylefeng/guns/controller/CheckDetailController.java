@@ -47,4 +47,16 @@ public class CheckDetailController {
 		return LayuiPageFactory.createPageInfo(checkDetailList);
 	}
 
+
+	/**
+	 * 对账总笔数 金额
+	 * @param checkDetail
+	 * @return
+	 */
+	@RequestMapping("/getSumTradeAmount")
+	@ResponseBody
+	public Map<String, Object> getSumTradeAmount(CheckDetail checkDetail) {
+		return checkDetailService.getSumTradeAmount(checkDetail);
+	}
+
 }

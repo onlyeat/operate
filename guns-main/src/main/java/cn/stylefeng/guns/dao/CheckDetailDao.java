@@ -27,4 +27,6 @@ public interface CheckDetailDao {
 														@Param("indexNo") String indexNo,
 														@Param("tradeChannel") String tradeChannel,
 														@Param("checkStatus") Integer checkStatus);
+
+	Map<String,Object> getSumTradeAmount(CheckDetail checkDetail);
 }

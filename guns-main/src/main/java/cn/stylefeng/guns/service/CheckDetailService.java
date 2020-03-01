@@ -39,4 +39,8 @@ public class CheckDetailService {
 				checkDetail.getMerchantNo(), checkDetail.getClearDate(), checkDetail.getIndexNo(),
 				checkDetail.getTradeChannel(), checkDetail.getCheckStatus());
 	}
+
+	public Map<String, Object> getSumTradeAmount(CheckDetail checkDetail) {
+		return  checkDetailDao.getSumTradeAmount(checkDetail);
+	}
 }
