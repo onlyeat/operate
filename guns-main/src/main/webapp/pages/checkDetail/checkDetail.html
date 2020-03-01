@@ -21,9 +21,8 @@
                                         商户号<input id="merchantNo" class="layui-input" type="text" placeholder=""/>
                                     </div>
 
-                                    <div class="search-title" style="width: 80px;">交易渠道</div>
-                                    <div class="zc-j-dropdown">
-                                        <select id="tradeChannel" name="tradeChannel" lay-verify="required">
+                                    <div class="layui-inline">交易渠道
+                                        <select id="tradeChannel" name="tradeChannel">
                                             <option value=>全部</option>
                                             <option value=1>微信</option>
                                             <option value=2>支付宝</option>
@@ -31,9 +30,8 @@
                                         </select>
                                     </div>
 
-                                    <div class="search-title" style="width: 80px;">对账状态</div>
-                                    <div class="zc-j-dropdown">
-                                        <select id="checkStatus" name="checkStatus" lay-verify="required">
+                                    <div class="layui-inline">对账状态
+                                        <select id="checkStatus" name="checkStatus">
                                             <option value=>全部</option>
                                             <option value=0>勾兑正常</option>
                                             <option value=1>错账</option>
@@ -46,6 +44,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <blockquote class="layui-elem-quote">
+                                <span style="color:#009688;font-weight:bold">交易总笔数:</span>
+                                <span id='countTrade'></span>
+                                <span style="color:#009688;font-weight:bold">总金额:</span>
+                                 <span id='sumTradeAmount'></span>
+                            </blockquote>
+                            <table class="layui-table" id="checkDetailTable2" lay-filter="checkDetailTable2"></table>
                             <table class="layui-table" id="checkDetailTable" lay-filter="checkDetailTable"></table>
                         </div>
                     </div>

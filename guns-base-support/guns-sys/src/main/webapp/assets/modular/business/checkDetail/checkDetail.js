@@ -25,7 +25,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
      * 初始化表格的列
      * trade_channel,merchant_no, clear_date, trade_date, index_no,trade_amount, check_status
      */
-    checkDetail.initColumn = function () {
+    checkDetail.initColumn = function (count) {
         return [[
             {type: 'checkbox'},
             {field: 'id', hide: true, sort: true, title: 'id'},
@@ -43,15 +43,15 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
             {field: 'merchantNo', align: "center", title: '商户号'},
             {field: 'clearDate', align: "center", title: '清算日期'},
             {field: 'tradeDate', align: "center", sort: true, title: '交易日期'},
-            {field: 'indexNo', align: "center", title: '流水号'},
-            {field: 'tradeAmount', align: "center", title: '交易金额'},
+            {field: 'indexNo', align: "center", title: '流水号', totalRowText: "合计金额："},
+            {field: 'tradeAmount', align: "center", title: '交易金额', totalRow: true},
             {field: 'checkStatus', align: "center", sort: true, title: '对账状态', templet: function (d) {
                     if (d.checkStatus === 0) {
                         return "正常";
                     } else {
                         return "错账";
                     }
-                }}
+            }}
         ]];
     };
 
@@ -77,6 +77,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         page: true,
         height: "full-98",
         cellMinWidth: 100,
+        totalRow: true, //开启合计行
         cols: checkDetail.initColumn(),
         page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
         layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -85,7 +86,18 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
             ,last: '尾页' //显示尾页
             }
         ,height: 'full-240'
-        ,limit: 20
+        ,done: function(res, curr, count){
+            //如果是异步请求数据方式，res即为你接口返回的信息。
+            //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+            console.log(res);
+            //得到当前页码
+            console.log(curr);
+            //得到数据总量
+            console.log(count);
+            $("#countTrade").html(count);
+            $("#sumTradeAmount").html(count);
+        }
+        // ,limit: 20
     });
 
     // 搜索按钮点击事件
