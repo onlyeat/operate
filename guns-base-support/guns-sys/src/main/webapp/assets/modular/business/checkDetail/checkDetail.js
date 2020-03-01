@@ -68,6 +68,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
         table.reload(checkDetail.tableId, {
             where: queryData, page: {curr: 1}
         });
+        getSumTradeAmount(queryData);
     };
 
     // 渲染表格
@@ -94,8 +95,10 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
             console.log(curr);
             //得到数据总量
             console.log(count);
-            $("#countTrade").html(count);
-            $("#sumTradeAmount").html(count);
+            // $("#countTrade").html(count);
+            // $("#sumTradeAmount").html(count);
+            //获取总金额 和 笔数
+            getSumTradeAmount();
         }
         // ,limit: 20
     });
@@ -128,5 +131,30 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'func'], function () {
     //         merchant.merchantAssign(data);
     //     }
     // });
+    function getSumTradeAmount() {
+        var merchantNo = $("#merchantNo").val();
+        var clearDate = $("#clearDate").val();
+        var indexNo = $("#indexNo").val();
+        var tradeChannel = $("#tradeChannel").val();
+        var checkStatus = $("#checkStatus").val();
+        $.ajax({
+            type: 'get',
+            url: '/checkDetail/getSumTradeAmount',
+            data: {"merchantNo": merchantNo, "clearDate":clearDate,
+                "indexNo": indexNo, "tradeChannel":tradeChannel,
+                "checkStatus":checkStatus},
+            async: false,
+            success: function (jsonObj) {
+                // $("#merchantIdSearch").empty();
+                // $("#merchantIdSearch").append("<option value=''>请选择渠道商</option>");
+                // for (var i = 0; i < jsonObj.length; i++) {
+                //     $("#merchantIdSearch").append("<option value="+ jsonObj[i].id +">"+ jsonObj[i].name +"</option>");
+                // }
+                // renderForm();
+                $("#countTrade").html(jsonObj.countTrade);
+                $("#sumTradeAmount").html(jsonObj.sumTradeAmount);
+            }
+        });
+    };
 });
 
